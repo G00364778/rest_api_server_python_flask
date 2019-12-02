@@ -5,7 +5,7 @@ app = Flask(__name__, static_url_path='', static_folder='.')
 def index():
   return "Hello, World This is changed"
 
-@app.route('/book/<ont:id>')
+@app.route('/book/<int:id>')
 def getBook(id):
   return "you want book with "+ str(id)
 
