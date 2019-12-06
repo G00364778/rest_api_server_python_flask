@@ -31,6 +31,7 @@
                 <span><button id="doUpdateButton" onclick="doUpdate()">Update</button></span>
         </div>
     <script>
+    host=window.location.origin
     function showCreate(){
         document.getElementById('showCreateButton').style.display="none"
         document.getElementById('bookTable').style.display="none"
@@ -143,7 +144,7 @@
     }
     function getAllAjax(){
         $.ajax({
-            "url": "http://127.0.0.1:5000/books",
+            "url": host+"/books",
             "method":"GET",
             "data":"",
             "dataType": "JSON",
@@ -162,7 +163,7 @@
         //var car = {"reg":"12 D 1234","make":"Fiat","model":"Punto","price":3000}
         console.log(JSON.stringify(book));
         $.ajax({
-            "url": "http://127.0.0.1:5000/books",
+            "url": host+"/books",
             "method":"POST",
             "data":JSON.stringify(book),
             "dataType": "JSON",
@@ -183,7 +184,7 @@
         //var car = {"reg":"12 D 1234","price":8000}
         //console.log(JSON.stringify(book));
         $.ajax({
-            "url": "http://127.0.0.1:5000/books/"+encodeURI(book.id),
+            "url": host+"/books/"+encodeURI(book.id),
             "method":"PUT",
             "data":JSON.stringify(book),
             "dataType": "JSON",
@@ -199,7 +200,7 @@
     function deleteBookAjax(id){   
         //console.log(JSON.stringify('deleting '+id));
         $.ajax({
-            "url": "http://127.0.0.1:5000/books/"+encodeURI(id),
+            "url": host+"/books/"+encodeURI(id),
             "method":"DELETE",
             "data":"",
             "dataType": "JSON",
