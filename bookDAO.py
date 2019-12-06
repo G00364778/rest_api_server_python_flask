@@ -1,14 +1,13 @@
 import mysql.connector
+import config as cfg
 class BookDAO:
     db=""
     def __init__(self): 
         self.db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="root",
-        #user="datarep",  # this is the user name on my mac
-        #passwd="password" # for my mac
-        database="jattie$default"
+        host=cfg.mysql['host'],
+        user=cfg.mysql['user'],
+        password=cfg.mysql['password'],
+        database=cfg.mysql['database']
         )        
     def create(self, values):
         cursor = self.db.cursor()
