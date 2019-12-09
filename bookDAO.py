@@ -2,23 +2,33 @@ import mysql.connector
 import config as cfg
 class BookDAO:
     db=""
-    def __init__(self): 
+    def connectToDB(self):
         self.db = mysql.connector.connect(
-        host=cfg.mysql['host'],
-        user=cfg.mysql['user'],
-        password=cfg.mysql['password'],
-        database=cfg.mysql['database']
-        )        
+            host=       cfg.mysql['host'],
+            user=       cfg.mysql['user'],
+            password=   cfg.mysql['password'],
+            database=   cfg.mysql['database']
+        )
+    def __init__(self):
+        self.connectToDB()
+
+    def getCursor(self):
+        if not self.db.is_connected():
+            self.connectToDB()
+        return self.db.cursor()
+
     def create(self, values):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql="insert into book (title,author, price) values (%s,%s,%s)"
         cursor.execute(sql, values)
+
         self.db.commit()
-        #print("Cursor: ",cursor)
-        #print("Rowid: ",cursor.lastrowid)
-        return cursor.lastrowid
+        lastRowId=cursor.lastrowid
+        cursor.close
+        return lastRowId
+
     def getAll(self):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql="select * from book"
         cursor.execute(sql)
         results = cursor.fetchall()
@@ -27,26 +37,36 @@ class BookDAO:
         for result in results:
             print(result)
             returnArray.append(self.convertToDictionary(result))
+        cursor.close
         return returnArray
+
     def findByID(self, id):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql="select * from book where idx = %s"
         values = (id,)
+
         cursor.execute(sql, values)
         result = cursor.fetchone()
-        return self.convertToDictionary(result)
+        book = self.convertToDictionary(result)
+        cursor.close()
+        return book
+
     def update(self, values):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql="update book set title= %s,author=%s, price=%s  where idx = %s"
         cursor.execute(sql, values)
         self.db.commit()
+
     def delete(self, id):
         cursor = self.db.cursor()
         sql="delete from book where idx = %s"
         values = (id,)
+        
         cursor.execute(sql, values)
         self.db.commit()
         print("delete done")
+        cursor.close()
+
     def convertToDictionary(self, result):
         colnames=['idx','Title','Author', "Price"]
         item = {}
