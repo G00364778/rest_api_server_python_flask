@@ -25,6 +25,7 @@ def processPiSensorData():
     if not request.json:
         abort(400)
     print(request.json)
+    return jsonify({"done":True})
     
 #curl  -i -H "Content-Type:application/json" -X POST -d "{\"Title\":\"hello\",\"Author\":\"someone\",\"Price\":123}" http://127.0.0.1:5000/books
 @app.route('/books', methods=['POST'])
