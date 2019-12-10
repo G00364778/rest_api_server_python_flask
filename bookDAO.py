@@ -17,11 +17,19 @@ class BookDAO:
             self.connectToDB()
         return self.db.cursor()
 
+    def insertIntoSense(self, values):
+        cursor = self.getCursor()
+        sql="insert into pisense (dts, tempexternal, temponboard, brightness, humidity, barotemp, baropressure, motiondetected) values (%s,%s,%s,%s,%s,%s,%s,%s)"
+        cursor.execute(sql,values)
+        self.db.commit()
+        lastRowId=cursor.lastrowid
+        cursor.close
+        return lastRowId
+
     def create(self, values):
         cursor = self.getCursor()
         sql="insert into book (title,author, price) values (%s,%s,%s)"
         cursor.execute(sql, values)
-
         self.db.commit()
         lastRowId=cursor.lastrowid
         cursor.close
