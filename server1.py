@@ -24,7 +24,7 @@ def findById(id):
     foundBook = bookDAO.findByID(id)
     return jsonify(foundBook)
 
-@app.route('/plot/pidat')
+@app.route('/plot/piplot')
 def piGetAll():
     temp=[]
     humid=[]
