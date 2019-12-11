@@ -36,17 +36,23 @@ def piGetAll():
         temp.append(dat['temp'])
         humid.append(dat['humid'])
         press.append(dat['press'])
+    
     fig=Figure()
     axis1 = fig.add_subplot(3,1,1)
     axis2 = fig.add_subplot(3,1,2)
     axis3 = fig.add_subplot(3,1,3)
-    axis1.set_title('Pi Sens Data')
-    axis1.set_xlabel('Samples')
+    
+    axis1.legend(loc='upper left')
     axis1.grid(True)
     xs=range(len(temp))
-    axis1.plot(xs,temp)
-    axis2.plot(xs,humid)
-    axis3.plot(xs,press)
+    
+    axis1.plot(xs,temp, 'r')
+    axis2.plot(xs,humid, 'g')
+    axis3.plot(xs,press, 'b')
+    axis1.legend(['Temp'])
+    axis2.legend(['Humidity'])
+    axis3.legend(['Pressure'])
+    
     canvas = FigureCanvas(fig)
     output = io.BytesIO()
     canvas.print_png(output)
