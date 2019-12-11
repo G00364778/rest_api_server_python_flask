@@ -35,13 +35,28 @@ class BookDAO:
         cursor.close
         return lastRowId
 
+    def piGetAll(self):
+        cursor = self.getCursor()
+        sql='select idx, tempexternal, humidity, baropressure from pisense'
+        colnames = ['idx', 'temp', 'humid', 'press']
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        #print('QueryData: {}'.format(results))
+        returnArray = []
+        for result in results:
+            #print('Result: {}'.format(result))
+            returnArray.append(self.convertToDictionary(result,colnames))
+        cursor.close
+        return returnArray
+
+
     def getAll(self):
         cursor = self.getCursor()
         sql="select * from book"
         cursor.execute(sql)
         results = cursor.fetchall()
         returnArray = []
-        print(results)
+        #print(results)
         for result in results:
             print(result)
             returnArray.append(self.convertToDictionary(result))
@@ -75,8 +90,8 @@ class BookDAO:
         print("delete done")
         cursor.close()
 
-    def convertToDictionary(self, result):
-        colnames=['idx','Title','Author', "Price"]
+    def convertToDictionary(self, result, colnames=['idx','Title','Author', 'Price']):
+        #colnames=['idx','Title','Author', 'Price']
         item = {}
         
         if result:

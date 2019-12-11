@@ -1,6 +1,9 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, make_response
 from bookDAO import bookDAO
 from datetime import datetime
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+import io
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
@@ -20,6 +23,36 @@ def getAll():
 def findById(id):
     foundBook = bookDAO.findByID(id)
     return jsonify(foundBook)
+
+@app.route('/plot/pidat')
+def piGetAll():
+    temp=[]
+    humid=[]
+    press=[]
+    piData = bookDAO.piGetAll()
+    #print(piData)
+    for dat in piData:
+        print('Pi Data Line: {}'.format(dat))
+        temp.append(dat['temp'])
+        humid.append(dat['humid'])
+        press.append(dat['press'])
+    fig=Figure()
+    axis1 = fig.add_subplot(3,1,1)
+    axis2 = fig.add_subplot(3,1,2)
+    axis3 = fig.add_subplot(3,1,3)
+    axis1.set_title('Pi Sens Data')
+    axis1.set_xlabel('Samples')
+    axis1.grid(True)
+    xs=range(len(temp))
+    axis1.plot(xs,temp)
+    axis2.plot(xs,humid)
+    axis3.plot(xs,press)
+    canvas = FigureCanvas(fig)
+    output = io.BytesIO()
+    canvas.print_png(output)
+    response = make_response(output.getvalue())
+    response.mimetype = 'image/png'
+    return response
 
 # curl -v --trace debug.log -i -H "Content-Type:application/json" -X POST -d @post.json http://jattie.pythonanywhere.com/pisense
 # post.json = {"TempExternal": 21, "TempOnboard": 26, "Brightness": -2, "Humidity": 20, "BaroTemp": 27, "BaroPressure": 1009.22, "MotionDetected": "False"}
