@@ -37,6 +37,21 @@ class BookDAO:
 
     def piGetAll(self):
         cursor = self.getCursor()
+        sql='select * from pisense'
+        colnames = ['idx', 'dts', 'temp', 'temp_pcb', 'lux', 'humid', 'temp_bar' 'press', 'motion']
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        #print('QueryData: {}'.format(results))
+        returnArray = []
+        for result in results:
+            #print('Result: {}'.format(result))
+            returnArray.append(self.convertToDictionary(result,colnames))
+        cursor.close
+        return returnArray
+
+
+    def piGetSome(self):
+        cursor = self.getCursor()
         sql='select idx, tempexternal, humidity, baropressure from pisense'
         colnames = ['idx', 'temp', 'humid', 'press']
         cursor.execute(sql)

@@ -34,7 +34,7 @@ def piGetPlot():
     temp=[]
     humid=[]
     press=[]
-    piData = bookDAO.piGetAll()
+    piData = bookDAO.piGetSome()
     #print(piData)
     for dat in piData:
         print('Pi Data Line: {}'.format(dat))
@@ -48,6 +48,8 @@ def piGetPlot():
     axis3 = fig.add_subplot(3,1,3)
     
     axis1.grid(True)
+    axis2.grid(True)
+    axis3.grid(True)
     xs=range(len(temp))
     
     axis1.plot(xs,temp, 'r')
