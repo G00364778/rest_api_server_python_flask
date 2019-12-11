@@ -24,8 +24,13 @@ def findById(id):
     foundBook = bookDAO.findByID(id)
     return jsonify(foundBook)
 
-@app.route('/plot/piplot')
+@app.route('/pidat')
 def piGetAll():
+    piData = bookDAO.piGetAll()
+    return jsonify(piData)
+
+@app.route('/plot/piplot')
+def piGetPlot():
     temp=[]
     humid=[]
     press=[]
@@ -42,7 +47,6 @@ def piGetAll():
     axis2 = fig.add_subplot(3,1,2)
     axis3 = fig.add_subplot(3,1,3)
     
-    axis1.legend(loc='upper left')
     axis1.grid(True)
     xs=range(len(temp))
     
