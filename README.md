@@ -15,4 +15,6 @@ Both Applications are hosted on PythonAnywhere.
 
 The Raspberry PI code is available here: https://github.com/G00364778/rest_client_pi
 
+More information on a raspberry pi is here: https://www.raspberrypi.org/
 
+The sensor board information is here: https://wiki.52pi.com/index.php/DockerPi_Sensor_Hub_Development_Board_SKU:_EP-0106
