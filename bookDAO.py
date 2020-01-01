@@ -37,8 +37,10 @@ class BookDAO:
 
     def piGetAll(self):
         cursor = self.getCursor()
-        sql='select * from pisense'
-        colnames = ['idx', 'dts', 'temp', 'temp_pcb', 'lux', 'humid', 'temp_bar' 'press', 'motion']
+        # sql='select idx, dts, tempexternal, temponboard, brightness, humidity, barotemp, baropressure, motiondetected from pisense'
+        sql='select idx, dts, tempexternal, temponboard, brightness, humidity, barotemp, baropressure from pisense'
+        #colnames = ['idx', 'dts', 'temp', 'temp_pcb', 'lux', 'humid', 'temp_bar' 'press', 'motion']
+        colnames = ['idx', 'dts', 'temp', 'temp_pcb', 'lux', 'humid', 'temp_bar' 'press']
         cursor.execute(sql)
         results = cursor.fetchall()
         #print('QueryData: {}'.format(results))
@@ -52,7 +54,7 @@ class BookDAO:
 
     def piGetSome(self):
         cursor = self.getCursor()
-        sql='select idx, tempexternal, humidity, baropressure from pisense'
+        sql='select idx, tempexternal, humidity, baropressure from pisense limit 240'
         colnames = ['idx', 'temp', 'humid', 'press']
         cursor.execute(sql)
         results = cursor.fetchall()
@@ -99,7 +101,7 @@ class BookDAO:
         cursor = self.db.cursor()
         sql="delete from book where idx = %s"
         values = (id,)
-        
+
         cursor.execute(sql, values)
         self.db.commit()
         print("delete done")
@@ -108,12 +110,12 @@ class BookDAO:
     def convertToDictionary(self, result, colnames=['idx','Title','Author', 'Price']):
         #colnames=['idx','Title','Author', 'Price']
         item = {}
-        
+
         if result:
             for i, colName in enumerate(colnames):
                 value = result[i]
                 item[colName] = value
         #print("convertToDictionary: ",item)
         return item
-        
+
 bookDAO = BookDAO()
